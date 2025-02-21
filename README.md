@@ -1,66 +1,259 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Лабораторная работа №5. Компоненты безопасности в Laravel
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Цель работы
 
-## About Laravel
+Познакомиться с основами компонентов безопасности в Laravel, таких как **аутентификация**, **авторизация**, **защита от CSRF**, а также использование встроенных механизмов для управления доступом.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Освоить подходы к безопасной разработке, включая создание защищенных маршрутов и управление ролями пользователей.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Условие
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+В данной лабораторной работе вы реализуете основные компоненты безопасности, такие как аутентификация, авторизация, защита маршрутов и базовая работа с ролями. Дополнительно вы настроите механизм сброса пароля и исследуете логирование действий пользователя.
 
-## Learning Laravel
+> [!NOTE]
+> Вы можете продолжать свою прошлую работу или начать новый проект.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### №1. Подготовка к работе
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. Создайте новый проект Laravel (если не установлен) или продолжите работу с прошлым проектом.
+2. Убедитесь, что переменные окружения в `.env` настроены правильно, включая подключение к базе данных.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### №2. Аутентификация пользователей
 
-## Laravel Sponsors
+1. Создайте контроллер `AuthController` для управления аутентификацией пользователей.
+2. Добавьте и реализуйте методы для регистрации, входа и выхода пользователя.
+   - `register()` для отображения формы регистрации.
+   - `storeRegister()` для обработки данных формы регистрации.
+   - `login()` для отображения формы входа.
+   - `storeLogin()` для обработки данных формы входа.
+3. Создайте маршруты для регистрации, входа и выхода пользователя.
+4. Обновите представления для форм регистрации и входа.
+5. Создайте отдельный класс `Request` для валидации данных при регистрации или входе, либо добавьте валидацию непосредственно в контроллер.
+6. Проверьте, что регистрация и вход пользователя работают корректно.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### №3. Аутентификация пользователей с помощью готовых компонентов
 
-### Premium Partners
+> [!NOTE]
+> Данный шаг является дополнительным и может быть выполнен после основной части работы.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+1. Установите библиотеку **Laravel Breeze** (или Fortify, Jetstream) для быстрой настройки аутентификации.
+    ```bash
+    php artisan breeze:install
+    npm install && npm run dev
+    php artisan migrate
+    ```
+2. Следуйте инструкциям по установке и настройке пакета.
+3. Проверьте, что маршруты `/register`, `/login`, `/logout` работают корректно.
 
-## Contributing
+### №4. Авторизация пользователей
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. Реализуйте страницу "Личный кабинет", доступ к которой имеют только авторизованные пользователи.
+2. Настройте проверку доступа к данной странице, добавив middleware `auth` в маршрут или реализовав проверку в контроллере.
+3. Обновите представление страницы "Личный кабинет", чтобы отображать информацию, доступную исключительно авторизованным пользователям.
 
-## Code of Conduct
+### №5. Роли пользователей
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+1. Добавьте систему ролей: **Администратор** и **Пользователь**.
+2. Настройте поведение для каждой роли:
+   1. **Администратор**: имеет возможность просматривать личные кабинеты всех пользователей.
+   2. **Пользователь**: может просматривать исключительно свой личный кабинет.
+3. Реализуйте проверки ролей с использованием метода `can`, `Gate`, или `middleware`, чтобы обеспечить корректное распределение прав доступа.
 
-## Security Vulnerabilities
+### №6. Выход и защита от CSRF
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. Добавьте кнопку выхода пользователя на страницу.
+2. Обеспечьте защиту от CSRF-атак на формах.
+3. Проверьте, что выход пользователя работает корректно и безопасно.
 
-## License
+## Контрольные вопросы
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+1. Какие готовые решения для аутентификации предоставляет Laravel?
+2. Какие методы аутентификации пользователей вы знаете?
+3. Чем отличается аутентификация от авторизации?
+4. Как обеспечить защиту от CSRF-атак в Laravel?
+
+## Выполнение лабораторной
+
+### №2. Аутентификация пользователей
+
+```bash
+php artisan make:controller AuthController
+```
+1. Создан контроллер `AuthController` для управления аутентификацией пользователей.
+2. Добавьлены методы для регистрации, входа и выхода пользователя.
+
+    ```php
+    public function register()
+        {
+            return view('auth.register');
+        }
+
+        public function storeRegister(RegisterRequest $request)
+        {
+            User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+            ]);
+
+            return redirect()->route('login');
+        }
+
+    public function login()
+    {
+        return view('auth.login');
+    }
+
+    public function storeLogin(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended('/');
+        }
+
+        return back()->withErrors([
+            'email' => 'Неверный email или пароль',
+        ]);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
+    }
+    ```
+
+3. Созданы маршруты для регистрации, входа и выхода пользователя.
+
+```php
+Route::get('register', [AuthController::class, 'register'])->name('register');
+Route::post('register', [AuthController::class, 'storeRegister'])->name('register.store');
+Route::get('login', [AuthController::class, 'login'])->name('login');
+Route::post('login', [AuthController::class, 'storeLogin'])->name('login.store');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+```
+
+4. Обновлены представления для форм регистрации и входа.
+5. Создайн отдельный класс `RegisterRequest` для валидации данных при регистрации.
+
+```php
+public function rules(): array
+    {
+        return [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ];
+    }
+```
+
+6. Было проверено, что регистрация и вход пользователя работают корректно.
+
+### №3. Аутентификация пользователей с помощью готовых компонентов
+
+Я не устанавливал библиотеки
+
+### №4. Авторизация пользователей
+
+1. Реализована страница "Личный кабинет", доступ к которой имеют только авторизованные пользователи.
+
+![image](https://github.com/user-attachments/assets/bc1ceb51-5c5f-459e-86e9-5b17c29eae51)
+
+
+2. Настроена проверка доступа к данной странице, добавив middleware `auth` в маршрут и реализовав проверку в контроллере.
+
+```php
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
+});
+```
+
+```php
+public function profile()
+    {
+        $user = Auth::user();
+        return view('auth.profile', compact('user'));
+    }
+```
+
+### №5. Роли пользователей
+
+1. Добавлена система ролей: **Администратор** и **Пользователь**.
+2. Настроено поведение для каждой роли:
+   1. **Администратор**: имеет возможность просматривать личные кабинеты всех пользователей.
+
+        ![image](https://github.com/user-attachments/assets/e7fb0147-cb0b-40b7-9ad4-793cfe14ad3b)
+
+
+   2. **Пользователь**: может просматривать исключительно свой личный кабинет.
+3. Реализована проверки ролей, чтобы обеспечить корректное распределение прав доступа.
+
+```php
+    @if(auth()->user()->role === 'admin')
+        <h3>Вы вошли как Администратор.</h3>
+        <a href="{{ route('users.index') }}" class="btn btn-primary">Список пользователей</a>
+    @else
+        <h3>Вы вошли как Обычный пользователь.</h3>
+    @endif
+```
+
+### №6. Выход и защита от CSRF
+1. Добавлена кнопка выхода пользователя на страницу.
+
+    ```php
+        <form action="{{ route('logout') }}" method="POST" class="mt-4">
+            @csrf
+            <button type="submit" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-700">Выйти</button>
+        </form>
+    ```
+
+2. Обеспечена защита от CSRF-атак на формах.
+3. Проверено, что выход пользователя работает корректно и безопасно.
+
+## Контрольные вопросы
+
+1. Какие готовые решения для аутентификации предоставляет Laravel?
+    1. Laravel Breeze: Простое стартовое решение с базовой аутентификацией.
+    2. Laravel Jetstream: Расширенное решение с дополнительными функциями, такими как управление командами и двухфакторная аутентификация.
+    3. Laravel Fortify: Бэкенд-решение для аутентификации без предустановленного пользовательского интерфейса.
+    4. Laravel Sanctum: Для SPA (Single Page Applications) и API аутентификации.
+    5. Laravel Passport: Полнофункциональная реализация OAuth2.
+2. Какие методы аутентификации пользователей вы знаете?
+    1. Форма аутентификации (логин/пароль)
+    2. Токен-основанная аутентификация (JWT, OAuth tokens)
+    3. Сессионная аутентификация
+    4. API ключи
+    5. Биометрическая аутентификация
+    6. Двухфакторная аутентификация (2FA)
+    7. Единый вход (Single Sign-On, SSO)
+3. Чем отличается аутентификация от авторизации?
+   1. Аутентификация: Процесс подтверждения личности пользователя.
+   2. Авторизация: Процесс проверки прав доступа пользователя.
+4. Как обеспечить защиту от CSRF-атак в Laravel?
+   1. Использование CSRF-токена в формах:
+
+        ```php
+        <form method="POST" action="/example">
+            @csrf
+            <!-- Поля формы -->
+        </form>
+        ```
+    
+    2. Применение Middleware: 
+        ```php
+        Route::middleware(['web'])->group(function () {
+            // Защищенные маршруты
+        });
+        ```
+    3. Автоматическая генерация и проверка токенов: 
+    Laravel генерирует CSRF-токены для каждой сессии и проверяет их при отправке форм.
